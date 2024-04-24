@@ -1,6 +1,8 @@
+import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import ContentBlock from "./ContentBlock";
 
 function Page() {
   const { title } = useParams();
@@ -8,20 +10,39 @@ function Page() {
 
   useEffect(() => {
     const query = `
-        {
-            pageCollection(where: {title: "${title}"}) {
-                items {
-                    title
-                    description {
-                        json
-                    }
-                    logo {
-                        url
-                    }
-                    enabled
-                }
+    {
+        pageCollection(where: {title: "${title}"}) {
+          items {
+            title
+            logo {
+              url
             }
+            description {
+              json
+            }
+            enabled
+            showInNav
+            isHome
+            contentBlocksCollection {
+              items {
+                title
+                description {
+                  json
+                }
+                image {
+                  url
+                }
+                ctasCollection {
+                  items {
+                    label
+                    url
+                  }
+                }
+              }
+            }
+          }
         }
+      }
         `;
 
     window
@@ -52,6 +73,7 @@ function Page() {
       <img src={page.logo.url} className="App-logo" alt="logo" />
       <p>{page.title}</p>
       <div>{documentToReactComponents(page.description.json)}</div>
+      <ContentBlock pageTitle={page.title} />
       <Link to={`/`}>Back</Link>
     </div>
   );

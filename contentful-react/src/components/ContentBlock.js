@@ -1,8 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import ContentBlock from "./ContentBlock";
+import { fetchGraphQL } from "../services/contentfulService";
 
 const query = `
 {
@@ -40,7 +39,7 @@ const query = `
   }
 `;
 
-function Home() {
+function ContentBlock({ pageTitle }) {
   const [page, setPage] = useState(null);
 
   useEffect(() => {
@@ -58,12 +57,12 @@ function Home() {
         if (err) {
           console.error(err);
         }
-
-        const homePage = data.pageCollection.items.find((item) => item.isHome);
-
-        setPage(homePage);
+        const selectedPage = data.pageCollection.items.find((page) => page.title === pageTitle);
+        if (selectedPage && selectedPage.contentBlocksCollection) {
+          setPage(selectedPage.contentBlocksCollection.items);
+        }
       });
-  }, []);
+  }, [pageTitle]);
 
   if (!page) {
     return "Loading...";
@@ -71,12 +70,22 @@ function Home() {
 
   return (
     <div>
-      <h1>{page.title}</h1>
-      <img src={page.logo.url} className="App-logo" alt="logo" />
-      <div>{documentToReactComponents(page.description.json)}</div>
-      <ContentBlock pageTitle={page.title} />
+      {page.map((page, pageIndex) => (
+        <div key={pageIndex}>
+          <h3>{page.title}</h3>
+          <img src={page.image.url} className="App-logo" alt="logo" />
+          {documentToReactComponents(page.description.json)}
+          <div>
+            {page.ctasCollection.items.map((cta, ctaIndex) => (
+              <a key={ctaIndex} href={cta.url}>
+                {cta.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-export default Home;
+export default ContentBlock;

@@ -1,8 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import ContentBlock from "./ContentBlock";
 
 const query = `
 {
@@ -40,7 +38,7 @@ const query = `
   }
 `;
 
-function Home() {
+function Navbar() {
   const [page, setPage] = useState(null);
 
   useEffect(() => {
@@ -59,9 +57,7 @@ function Home() {
           console.error(err);
         }
 
-        const homePage = data.pageCollection.items.find((item) => item.isHome);
-
-        setPage(homePage);
+        setPage(data.pageCollection.items.filter((page) => page.showInNav));
       });
   }, []);
 
@@ -70,13 +66,14 @@ function Home() {
   }
 
   return (
-    <div>
-      <h1>{page.title}</h1>
-      <img src={page.logo.url} className="App-logo" alt="logo" />
-      <div>{documentToReactComponents(page.description.json)}</div>
-      <ContentBlock pageTitle={page.title} />
-    </div>
+    <ul>
+      {page.map((page) => (
+        <li key={page.title}>
+          <Link to={`/page/${page.title}`}>{page.title}</Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 
-export default Home;
+export default Navbar;
