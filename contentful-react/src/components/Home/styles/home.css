@@ -1,0 +1,22 @@
+.home-page-container {
+  position: relative;
+}
+
+.home-page-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 25px;
+}
+
+.home-page-title h1 {
+  color: white;
+  font-size: 50px;
+}
+
+.home-page-image {
+  width: 100vw;
+  height: auto;
+  max-height: 800px;
+  object-fit: cover;
+}

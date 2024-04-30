@@ -14,55 +14,30 @@ export const HOME_PAGE_QUERY = `
       isHome
       contentBlocksCollection {
         items {
-          title
-          description {
-            json
-          }
-          image {
-            url
-          }
-          ctasCollection {
-            items {
-              label
+          ... on ContentBlock {
+            __typename
+            title
+            description {
+              json
+            }
+            image {
               url
             }
+            ctasCollection {
+              items {
+                label
+                url
+              }
+            }
           }
-        }
-      }
-    }
-  }
-}
-`;
 
-export const CONTENT_BLOCK_QUERY = `
-{
-  pageCollection {
-    items {
-      title
-      logo {
-        url
-      }
-      description {
-        json
-      }
-      enabled
-      showInNav
-      isHome
-      contentBlocksCollection {
-        items {
-          title
-          description {
-            json
-          }
-          image {
+          ... on Cta {
+            __typename
+            label
             url
+
           }
-          ctasCollection {
-            items {
-              label
-              url
-            }
-          }
+          
         }
       }
     }
@@ -84,23 +59,6 @@ export const NAVBAR_QUERY = `
       enabled
       showInNav
       isHome
-      contentBlocksCollection {
-        items {
-          title
-          description {
-            json
-          }
-          image {
-            url
-          }
-          ctasCollection {
-            items {
-              label
-              url
-            }
-          }
-        }
-      }
     }
   }
 }
@@ -122,19 +80,30 @@ export const PAGE_BY_TITLE_QUERY = (title) => `
         isHome
         contentBlocksCollection {
           items {
-            title
-            description {
-              json
-            }
-            image {
-              url
-            }
-            ctasCollection {
-              items {
-                label
+            ... on ContentBlock {
+              __typename
+              title
+              description {
+                json
+              }
+              image {
                 url
               }
+              ctasCollection {
+                items {
+                  label
+                  url
+                }
+              }
             }
+
+            ... on Cta {
+              __typename
+              label
+              url
+
+            }
+            
           }
         }
       }
