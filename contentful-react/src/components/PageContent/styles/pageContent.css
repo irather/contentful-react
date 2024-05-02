@@ -9,8 +9,6 @@
 .cta-button-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  margin-left: 375px;
 }
 
 @media (max-width: 771px) {

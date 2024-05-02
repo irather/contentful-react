@@ -9,24 +9,40 @@ import "./styles/home.css";
 function Home() {
   const [currentPage, setCurrentPage] = useState(null);
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchHomePage() {
-      setData(await fetchGraphQL(HOME_PAGE_QUERY));
+      const fetchedData = await fetchGraphQL(HOME_PAGE_QUERY);
+      setData(fetchedData);
+      setLoading(false);
     }
 
     fetchHomePage();
   }, []);
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || data.pageCollection.items.length === 0) {
+      setLoading(false);
+      return;
+    }
 
     const homePage = data.pageCollection.items.find((item) => item.isHome);
+    if (!homePage || !homePage.logo || !homePage.logo.url) {
+      setLoading(false);
+      return;
+    }
+
     setCurrentPage(homePage);
+    setLoading(false);
   }, [data]);
 
-  if (!currentPage) {
+  if (loading) {
     return "Loading...";
+  }
+
+  if (!currentPage) {
+    return null;
   }
 
   return (
@@ -38,13 +54,13 @@ function Home() {
         <Row>
           <Col>
             <div className="home-page-container">
-              <div className="home-page-title">
-                <h1>{currentPage.title}</h1>
-              </div>
+              {currentPage.title && (
+                <div className="home-page-title">
+                  <h1>{currentPage.title}</h1>
+                </div>
+              )}
             </div>
-
-            <div className="description">{documentToReactComponents(currentPage.description.json)}</div>
-
+            {currentPage.description && currentPage.description.json && <div className="description">{documentToReactComponents(currentPage.description.json)}</div>}
             <Container className="d-flex justify-content-center align-items-center py-4">
               <PageContent contentBlocks={currentPage.contentBlocksCollection} />
             </Container>
