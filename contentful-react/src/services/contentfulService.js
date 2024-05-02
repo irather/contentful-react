@@ -30,6 +30,20 @@ export const HOME_PAGE_QUERY = `
               }
             }
           }
+          
+          ... on Accordian {
+            __typename
+            title
+            onlySingle
+            accordianPanelsCollection {
+              items {
+                title
+                description {
+                  json
+                }
+              }
+            }
+          }
 
           ... on Cta {
             __typename
@@ -93,6 +107,20 @@ export const PAGE_BY_TITLE_QUERY = (title) => `
                 items {
                   label
                   url
+                }
+              }
+            }
+            
+            ... on Accordian {
+              __typename
+              title
+              onlySingle
+              accordianPanelsCollection {
+                items {
+                  title
+                  description {
+                    json
+                  }
                 }
               }
             }

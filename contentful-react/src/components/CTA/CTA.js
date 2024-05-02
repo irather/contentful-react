@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 function CTA({ model, keyIndex }) {
   return (
     <div>
-      <Button as="a" href={model.url} key={keyIndex} onClick={() => console.log("Button clicked")}>
+      <Button as="a" href={model.url} key={keyIndex}>
         {model.label}
       </Button>
     </div>

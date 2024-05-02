@@ -16,7 +16,11 @@ function ContentBlock({ model, keyIndex }) {
             <h2>{model.title}</h2>
           </div>
           <div className="description">{documentToReactComponents(model.description.json)}</div>
-          <div className="cta-button-row">{model.ctasCollection && model.ctasCollection.items.map((cta, index) => <CTA key={index} model={cta} />)}</div>
+          <div className="cta-button-row">
+            {model.ctasCollection.items.map((cta, index) => (
+              <CTA key={index} model={cta} />
+            ))}
+          </div>
         </Col>
       </Row>
     </Container>
