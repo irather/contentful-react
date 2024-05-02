@@ -45,6 +45,13 @@ export const HOME_PAGE_QUERY = `
             }
           }
 
+          ... on Video {
+            __typename
+            title
+            videoId
+            videoType
+          }
+
           ... on Cta {
             __typename
             label
@@ -123,6 +130,13 @@ export const PAGE_BY_TITLE_QUERY = (title) => `
                   }
                 }
               }
+            }
+
+            ... on Video {
+              __typename
+              title
+              videoId
+              videoType
             }
 
             ... on Cta {

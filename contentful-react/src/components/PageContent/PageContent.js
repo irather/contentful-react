@@ -4,6 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import CTA from "../CTA/CTA";
 import ContentBlock from "../ContentBlock/ContentBlock";
 import Accordian from "../Accordian/Accordian";
+import Video from "../Video/Video";
 import "./styles/pageContent.css";
 
 function PageContent({ contentBlocks }) {
@@ -34,6 +35,10 @@ function PageContent({ contentBlocks }) {
 
             if (model.__typename === "Accordian") {
               return <Accordian model={model} keyIndex={keyIndex} />;
+            }
+
+            if (model.__typename === "Video") {
+              return <Video model={model} keyIndex={keyIndex} />;
             }
           })}
         </Col>
