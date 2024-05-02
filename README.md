@@ -1,2 +1,2 @@
 # contentful-react
-Contentful React Tutorial
+Contentful React Tutorial with GraphQL queries
