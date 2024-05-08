@@ -22,7 +22,7 @@ function Accordian({ model, keyIndex }) {
 
   return (
     <Container key={keyIndex}>
-      <h1>{model.title}</h1>
+      <h2>{model.title}</h2>
       {model.accordianPanelsCollection.items.map((accordion, accordionKey) => (
         <Accordion key={accordionKey} expanded={model.onlySingle ? expanded === accordionKey : expanded[accordionKey]} onChange={handleChange(accordionKey, model.onlySingle)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${accordionKey}-content`} id={`panel${accordionKey}-header`}>

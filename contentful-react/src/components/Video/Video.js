@@ -10,7 +10,7 @@ function Video({ model, keyIndex }) {
   return (
     <Container key={keyIndex}>
       <h2>{model.title}</h2>
-      <iframe width="560" height="315" src={videoSrc} title={model.videoType + " video player"} allow={allowAttributes} allowFullScreen></iframe>
+      <iframe width="100%" height="315" src={videoSrc} title={model.videoType + " video player"} allow={allowAttributes} allowFullScreen></iframe>
     </Container>
   );
 }

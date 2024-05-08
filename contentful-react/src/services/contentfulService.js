@@ -58,6 +58,13 @@ export const HOME_PAGE_QUERY = `
             url
 
           }
+
+          ... on Columb {
+            __typename
+            noOfColumns
+            columnId
+           
+          }
           
         }
       }
@@ -146,8 +153,163 @@ export const PAGE_BY_TITLE_QUERY = (title) => `
 
             }
             
+            ... on Columb {
+              __typename
+              noOfColumns
+              columnId
+             
+            }
           }
         }
+      }
+    }
+  }
+`;
+
+export const COLUMN_QUERY = (columnID) => `
+{
+  columbCollection (where: { columnId: "${columnID}" }) {
+    items {
+        __typename
+        noOfColumns
+        columnId
+
+        c1ContentBlockCollection  {
+          items {
+            __typename
+            ... on ContentBlock {
+              title
+              description {
+                json
+              }
+              image {
+                url
+              }
+              ctasCollection {
+                items {
+                  label
+                  url
+                }
+              }
+            }
+
+            ... on Accordian {
+              title
+              onlySingle
+              accordianPanelsCollection {
+                items {
+                  title
+                  description {
+                    json
+                  }
+                }
+              }
+            }
+
+            ... on Video {
+              title
+              videoId
+              videoType
+            }
+
+            ... on Cta {
+              label
+              url
+            }
+          }
+        }
+      
+      c2ContentBlockCollection  {
+          items {
+            __typename
+            ... on ContentBlock {
+              title
+              description {
+                json
+              }
+              image {
+                url
+              }
+              ctasCollection {
+                items {
+                  label
+                  url
+                }
+              }
+            }
+
+            ... on Accordian {
+              title
+              onlySingle
+              accordianPanelsCollection {
+                items {
+                  title
+                  description {
+                    json
+                  }
+                }
+              }
+            }
+
+            ... on Video {
+              title
+              videoId
+              videoType
+            }
+
+            ... on Cta {
+              label
+              url
+            }
+          }
+        }
+      
+      c3ContentBlockCollection  {
+          items {
+            __typename
+            ... on ContentBlock {
+              title
+              description {
+                json
+              }
+              image {
+                url
+              }
+              ctasCollection {
+                items {
+                  label
+                  url
+                }
+              }
+            }
+
+            ... on Accordian {
+              title
+              onlySingle
+              accordianPanelsCollection {
+                items {
+                  title
+                  description {
+                    json
+                  }
+                }
+              }
+            }
+
+            ... on Video {
+              title
+              videoId
+              videoType
+            }
+
+            ... on Cta {
+              label
+              url
+            }
+          }
+        }
+           
+
       }
     }
   }

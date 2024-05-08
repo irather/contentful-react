@@ -1,10 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import CTA from "../CTA/CTA";
-import ContentBlock from "../ContentBlock/ContentBlock";
-import Accordian from "../Accordian/Accordian";
-import Video from "../Video/Video";
+import ContentBlocks from "../ContentBlocks/ContentBlocks";
 import "./styles/pageContent.css";
 
 function PageContent({ contentBlocks }) {
@@ -24,23 +21,7 @@ function PageContent({ contentBlocks }) {
     <>
       <Row>
         <Col>
-          {pageComponents.map((model, keyIndex) => {
-            if (model.__typename === "ContentBlock") {
-              return <ContentBlock model={model} keyIndex={keyIndex} />;
-            }
-
-            if (model.__typename === "Cta") {
-              return <CTA model={model} keyIndex={keyIndex} />;
-            }
-
-            if (model.__typename === "Accordian") {
-              return <Accordian model={model} keyIndex={keyIndex} />;
-            }
-
-            if (model.__typename === "Video") {
-              return <Video model={model} keyIndex={keyIndex} />;
-            }
-          })}
+          <ContentBlocks components={pageComponents} />
         </Col>
       </Row>
     </>
