@@ -40,7 +40,7 @@ function Column({ model, keyIndex, columnID }) {
       const c3Content = currentColumn.c3ContentBlockCollection;
       setColumnContent([c1Content, c2Content, c3Content]);
     }
-  }, [data]);
+  }, [data, columnID]);
 
   if (!columnContent) {
     return "Loading...";
@@ -50,7 +50,7 @@ function Column({ model, keyIndex, columnID }) {
     <Container key={keyIndex}>
       <h2>Column</h2>
       <Row>
-        {model.noOfColumns == 2 || model.noOfColumns == 3 ? (
+        {model.noOfColumns === 2 || model.noOfColumns === 3 ? (
           columnContent.map((content, index) => (
             <Col key={index}>
               <ContentBlocks components={content.items} />

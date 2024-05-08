@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import PageContent from "../PageContent/PageContent";
-import { fetchGraphQL, PAGE_BY_TITLE_QUERY } from "../../services/contentfulService";
+import { fetchGraphQL, PAGE_BY_TITLE_QUERY, HOME_PAGE_QUERY } from "../../services/contentfulService";
 import { Container, Row, Col } from "react-bootstrap";
 import "./styles/page.css";
 
-function Page() {
+function Page({ homeFlag }) {
   const { title } = useParams();
   const [currentPage, setCurrentPage] = useState(null);
   const [data, setData] = useState(null);
@@ -15,13 +15,19 @@ function Page() {
 
   useEffect(() => {
     async function fetchPage() {
-      const fetchedData = await fetchGraphQL(PAGE_BY_TITLE_QUERY(title));
-      setData(fetchedData);
+      if (homeFlag === true) {
+        const fetchedData = await fetchGraphQL(HOME_PAGE_QUERY);
+        setData(fetchedData);
+      } else {
+        const fetchedData = await fetchGraphQL(PAGE_BY_TITLE_QUERY(title));
+        setData(fetchedData);
+      }
+
       setLoading(false);
     }
 
     fetchPage();
-  }, [title]);
+  }, [title, homeFlag]);
 
   useEffect(() => {
     if (!data || data.pageCollection.items.length === 0) {
@@ -36,6 +42,7 @@ function Page() {
     }
 
     setCurrentPage(page);
+
     setLoading(false);
   }, [data]);
 
@@ -44,14 +51,20 @@ function Page() {
   }
 
   if (!currentPage) {
-    return null; // Handles the case where the page might be partially invalid
+    return null;
   }
 
   return (
     <>
-      <div className="home-page-container">
-        <img src={currentPage.logo.url} className="page-image" alt="logo" />
-      </div>
+      {currentPage.isHome === true ? (
+        <div className="home-page-container">
+          <img src={currentPage.logo.url} className="home-page-image" alt="logo" />
+        </div>
+      ) : (
+        <div className="home-page-container">
+          <img src={currentPage.logo.url} className="page-image" alt="logo" />
+        </div>
+      )}
       <Container className="home-content-container">
         <Row>
           <Col>

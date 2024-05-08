@@ -9,8 +9,8 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/page/:title" element={<Page />} />
+        <Route path="/" element={<Page homeFlag={true} />} />
+        <Route path="/page/:title" element={<Page homeFlag={false} />} />
       </Routes>
     </Router>
   );
