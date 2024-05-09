@@ -65,6 +65,14 @@ export const HOME_PAGE_QUERY = `
             columnId
            
           }
+
+          ... on Table {
+            __typename
+            title
+            tableData
+            isSortable
+            isFirstRowHeader
+          }
           
         }
       }
@@ -159,6 +167,14 @@ export const PAGE_BY_TITLE_QUERY = (title) => `
               columnId
              
             }
+
+            ... on Table {
+              __typename
+              title
+              tableData
+              isSortable
+              isFirstRowHeader
+            }
           }
         }
       }
@@ -216,6 +232,7 @@ export const COLUMN_QUERY = (columnID) => `
               label
               url
             }
+
           }
         }
       

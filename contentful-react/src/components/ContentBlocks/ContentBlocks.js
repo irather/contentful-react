@@ -4,6 +4,7 @@ import ContentBlock from "../ContentBlock/ContentBlock";
 import Accordian from "../Accordian/Accordian";
 import Video from "../Video/Video";
 import Column from "../Column/Column";
+import Table from "../Table/Table";
 
 function ContentBlocks({ components }) {
   return components.map((model, keyIndex) => {
@@ -25,6 +26,11 @@ function ContentBlocks({ components }) {
 
     if (model.__typename === "Columb") {
       return <Column model={model} keyIndex={keyIndex} columnID={model.columnId} />;
+    }
+
+    if (model.__typename === "Table") {
+      console.log("TABLE EXISTS");
+      return <Table model={model} keyIndex={keyIndex} />;
     }
   });
 }
