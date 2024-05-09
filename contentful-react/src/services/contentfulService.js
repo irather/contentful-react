@@ -73,6 +73,12 @@ export const HOME_PAGE_QUERY = `
             isSortable
             isFirstRowHeader
           }
+
+          ... on Recalls {
+            __typename
+            title
+            language
+          }
           
         }
       }
@@ -174,6 +180,12 @@ export const PAGE_BY_TITLE_QUERY = (title) => `
               tableData
               isSortable
               isFirstRowHeader
+            }
+
+            ... on Recalls {
+              __typename
+              title
+              language
             }
           }
         }

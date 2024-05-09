@@ -1,0 +1,5 @@
+.recall-id {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue !important;
+}
