@@ -15,12 +15,18 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
+import { auth, googleProvider } from "../../configs/firebaseConfig";
+import { signInWithPopup, signOut } from "firebase/auth";
+
+import Cookies from "js-cookie";
+
 import "./styles/navbar.css";
 
 function Navbar() {
   const [page, setPage] = useState(null);
   const [data, setData] = useState(null);
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function fetchNavBar() {
@@ -35,9 +41,25 @@ function Navbar() {
     setPage(data.pageCollection.items.filter((page) => page.showInNav));
   }, [data]);
 
-  if (!page) {
-    return "Loading...";
-  }
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const fullName = user.displayName.split(" ");
+        const firstName = fullName[0];
+        const lastName = fullName.slice(1).join(" ");
+
+        Cookies.set("isLoggedIn", "true", { expires: 1, sameSite: "None", secure: true });
+        Cookies.set("firstName", firstName, { expires: 1, sameSite: "None", secure: true });
+        Cookies.set("lastName", lastName, { expires: 1, sameSite: "None", secure: true });
+        setUser(user);
+      } else {
+        Cookies.remove("isLoggedIn");
+        Cookies.remove("firstName");
+        Cookies.remove("lastName");
+        setUser(null);
+      }
+    });
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -46,6 +68,30 @@ function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Error logging in with Google: ", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      Cookies.remove("isLoggedIn");
+      Cookies.remove("firstName");
+      Cookies.remove("lastName");
+      setUser(null);
+    } catch (error) {
+      console.error("Error logging out: ", error);
+    }
+  };
+
+  if (!page) {
+    return "Loading...";
+  }
 
   return (
     <AppBar position="static">
@@ -101,6 +147,17 @@ function Navbar() {
                   </Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                {user ? (
+                  <Button color="inherit" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                ) : (
+                  <Button color="inherit" onClick={handleLogin}>
+                    Login
+                  </Button>
+                )}
+              </MenuItem>
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -130,6 +187,15 @@ function Navbar() {
                 </div>
               </Button>
             ))}
+            {user ? (
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
+              <Button color="inherit" onClick={handleLogin}>
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>
